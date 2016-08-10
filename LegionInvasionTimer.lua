@@ -22,7 +22,7 @@ header:SetAllPoints(frame)
 header:SetText(name)
 
 local function startBar(timeLeft)
-	local bar = candy:New(media:Fetch("statusbar", "BantoBar"), 200, 30)
+	local bar = candy:New(media:Fetch("statusbar", "BantoBar"), 200, 15)
 	bar:SetLabel("Invasion")
 	bar.candyBarLabel:SetJustifyH("LEFT")
 	bar:SetDuration(timeLeft)
