@@ -35,7 +35,7 @@ local function runOnLogin()
 	local found = false
 
 	for i = 1, 300 do
-		local name, timeLeftMinutes, rewardQuestID = GetInvasionInfoByMapAreaID(i)
+		local name, timeLeftMinutes, rewardQuestID = GetInvasionInfo(i)
 		if timeLeftMinutes and timeLeftMinutes > 0 then
 			found = true
 			legionInvasionTimerDB = {GetTime(), timeLeftMinutes}
