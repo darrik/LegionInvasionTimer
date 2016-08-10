@@ -21,9 +21,13 @@ local header = frame:CreateFontString("TargetPercentText", "OVERLAY", "TextStatu
 header:SetAllPoints(frame)
 header:SetText(name)
 
-local function startBar(timeLeft)
+local function startBar(timeLeft, done)
 	local bar = candy:New(media:Fetch("statusbar", "BantoBar"), 180, 15)
-	bar:SetLabel("Invasion")
+	local label = "Invasion"
+	if done then
+		label = label .. " (done)"
+	end
+	bar:SetLabel(label)
 	bar.candyBarLabel:SetJustifyH("LEFT")
 	bar:SetDuration(timeLeft)
 	bar:SetIcon(236292) -- Interface\\Icons\\Ability_Warlock_DemonicEmpowerment
@@ -38,20 +42,21 @@ local function runOnLogin()
 		local name, timeLeftMinutes, rewardQuestID = GetInvasionInfo(i)
 		if timeLeftMinutes and timeLeftMinutes > 0 then
 			found = true
-			legionInvasionTimerDB = {GetTime(), timeLeftMinutes}
+			local isDone = IsQuestFlaggedCompleted(rewardQuestID)
+			legionInvasionTimerDB = {GetTime(), timeLeftMinutes, isDone}
 
-			startBar(timeLeftMinutes * 60)
+			startBar(timeLeftMinutes * 60, isDone)
 			break
 		end
 	end
 
 	if not found and legionInvasionTimerDB then
-		local t, rem = legionInvasionTimerDB[1], legionInvasionTimerDB[2]
+		local t, rem, done = legionInvasionTimerDB[1], legionInvasionTimerDB[2], legionInvasionTimerDB[3]
 		if t and rem then
 			found = true
 			local deduct = (GetTime() - t) / 60
 			local timeLeftMinutes = rem - deduct
-			startBar(timeLeftMinutes * 60)
+			startBar(timeLeftMinutes * 60, done)
 		end
 	end
 
